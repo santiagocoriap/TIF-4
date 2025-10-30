@@ -1,0 +1,10 @@
+
+Flask==3.0.3
+Flask-Cors==4.0.1
+pandas==2.2.2
+numpy==1.26.4
+# Opcionales (solo si vas a usar los modelos)
+tensorflow==2.16.1; platform_machine != "arm64" or platform_system != "Darwin"
+joblib==1.4.2
+scikit-learn==1.6.1
+python-dotenv==1.0.1

@@ -1,0 +1,32 @@
+// Detected
+{
+    "depth": 128.009,
+    "id": "us6000rgzk",
+    "latitude": -21.88,
+    "longitude": -68.64,
+    "magnitude": 4.8,
+    "radius_km": 26.11651689888372,
+    "source": "detected",
+    "time": "Tue, 14 Oct 2025 04:43:34 GMT",
+    "time_ms": 1760417014719
+}
+
+
+//Expected
+{
+    "depth": 151.7339324951172,
+    "earthquake_id": "us6000qhyd",
+    "id": "exp-us6000qhyd",
+    "latitude": -21.73385238647461,
+    "longitude": -67.70409393310547,
+    "magnitude": 4.288239002227783,
+    "original_latitude": -20.9406,
+    "original_longitude": -67.5152,
+    "place": null,
+    "radius_km": 18.31723193948689,
+    "source": "expected",
+    "time": "Thu, 05 Jun 2025 15:12:31 GMT",
+    "time_ms": 1749136351000
+}
+
+

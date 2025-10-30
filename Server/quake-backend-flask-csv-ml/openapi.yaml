@@ -1,0 +1,146 @@
+
+openapi: 3.0.3
+info:
+  title: QuakeScope CSV+ML API
+  version: "1.0.0"
+  description: |
+    Backend que **no** ingiere USGS. Lee CSVs provistos, aplica modelos ML (.h5 + .pkl)
+    si están presentes, y expone endpoints para la app móvil.
+servers:
+  - url: http://localhost:8000
+paths:
+  /api/health:
+    get:
+      summary: Health check
+      responses:
+        '200': { description: OK }
+  /api/earthquakes/detected:
+    get:
+      summary: Sismos detectados (desde CSV api_earthquakes.csv)
+      parameters:
+        - in: query
+          name: min_mag
+          schema: { type: number }
+        - in: query
+          name: max_mag
+          schema: { type: number }
+        - in: query
+          name: since_ms
+          schema: { type: integer }
+        - in: query
+          name: until_ms
+          schema: { type: integer }
+        - in: query
+          name: bbox
+          description: west,south,east,north
+          schema: { type: string }
+        - in: query
+          name: limit
+          schema: { type: integer }
+        - in: query
+          name: hide
+          schema: { type: integer, enum: [0,1], default: 1 }
+      responses:
+        '200': { description: OK }
+  /api/earthquakes/expected:
+    get:
+      summary: Sismos "esperados" (predicciones). Usa modelos si existen, si no, lee earthquake_predictions.csv
+      parameters:
+        - in: query
+          name: min_mag
+          schema: { type: number }
+        - in: query
+          name: max_mag
+          schema: { type: number }
+        - in: query
+          name: since_ms
+          schema: { type: integer }
+        - in: query
+          name: until_ms
+          schema: { type: integer }
+        - in: query
+          name: bbox
+          schema: { type: string }
+        - in: query
+          name: limit
+          schema: { type: integer }
+        - in: query
+          name: hide
+          schema: { type: integer, enum: [0,1], default: 1 }
+      responses:
+        '200': { description: OK }
+  /api/earthquakes/pairs:
+    get:
+      summary: Parejas detectado + esperado con filtros aplicados en el servidor
+      parameters:
+        - in: query
+          name: real_min_mag
+          schema: { type: number }
+        - in: query
+          name: real_max_mag
+          schema: { type: number }
+        - in: query
+          name: real_min_depth
+          schema: { type: number }
+        - in: query
+          name: real_max_depth
+          schema: { type: number }
+        - in: query
+          name: expected_min_mag
+          schema: { type: number }
+        - in: query
+          name: expected_max_mag
+          schema: { type: number }
+        - in: query
+          name: expected_min_depth
+          schema: { type: number }
+        - in: query
+          name: expected_max_depth
+          schema: { type: number }
+        - in: query
+          name: limit
+          schema: { type: integer }
+        - in: query
+          name: hide
+          schema: { type: integer, enum: [0,1], default: 1 }
+      responses:
+        '200': { description: OK }
+  /api/earthquakes/expected/recompute:
+    post:
+      summary: Recalcula predicciones desde api_earthquakes.csv usando modelos ML y guarda CSV de salida
+      responses:
+        '200': { description: OK }
+        '400': { description: Modelos/escalares ausentes }
+  /api/earthquakes/summary:
+    get:
+      summary: Resumen de conteos
+      responses:
+        '200': { description: OK }
+  /api/earthquakes/hidden:
+    get:
+      summary: Obtener IDs ocultos
+      responses:
+        '200': { description: OK }
+    post:
+      summary: Agregar IDs a la lista de ocultos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  items: { type: string }
+      responses:
+        '200': { description: OK }
+  /api/earthquakes/hide/{id}:
+    delete:
+      summary: Quitar un ID de la lista de ocultos
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: OK }
