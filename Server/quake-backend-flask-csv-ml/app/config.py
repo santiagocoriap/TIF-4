@@ -23,3 +23,13 @@ class Config:
 
     # Models directory (h5 and pkl)
     MODELS_DIR = os.getenv("MODELS_DIR", os.path.join(os.path.dirname(__file__), "..", "models"))
+
+    # Notification storage and delivery
+    DEVICE_TOKENS_JSON = os.getenv(
+        "DEVICE_TOKENS_JSON",
+        os.path.join(DATA_DIR, "device_tokens.json")
+    )
+    FCM_SERVICE_ACCOUNT_JSON = os.getenv("FCM_SERVICE_ACCOUNT_JSON")
+    FCM_PROJECT_ID = os.getenv("FCM_PROJECT_ID")
+    FCM_API_URL = os.getenv("FCM_API_URL", "https://fcm.googleapis.com/v1")
+    FCM_TIMEOUT_SECONDS = float(os.getenv("FCM_TIMEOUT_SECONDS", "10"))

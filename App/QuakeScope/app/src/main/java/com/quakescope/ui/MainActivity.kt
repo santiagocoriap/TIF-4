@@ -2,6 +2,9 @@ package com.quakescope.ui
 
 import android.os.Bundle
 import android.app.Activity
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -26,10 +29,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import android.util.Log
+import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.messaging.FirebaseMessaging
 import com.quakescope.R
+import com.quakescope.domain.usecase.UpdateDeviceTokenUseCase
 import com.quakescope.ui.navigation.BottomNavBar
 import com.quakescope.ui.navigation.Navigation
 import com.quakescope.ui.navigation.Screen
@@ -38,21 +46,39 @@ import com.quakescope.ui.theme.QuakeScopeTheme
 import com.quakescope.ui.viewmodel.ListViewModel
 import com.quakescope.ui.viewmodel.MapViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var updateDeviceTokenUseCase: UpdateDeviceTokenUseCase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             QuakeScopeTheme {
-                MainScreen()
+                MainScreen(
+                    onTokenRegistered = { token ->
+                        lifecycleScope.launch {
+                            try {
+                                updateDeviceTokenUseCase(token)
+                            } catch (ex: Exception) {
+                                Log.w("MainActivity", "Failed to sync FCM token", ex)
+                            }
+                        }
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    onTokenRegistered: (String) -> Unit = {}
+) {
     val navController = rememberNavController()
     var showFilterSheet by remember { mutableStateOf(false) }
     var showDisclaimer by remember { mutableStateOf(true) }
@@ -62,6 +88,33 @@ fun MainScreen() {
 
     LaunchedEffect(Unit) {
         mapViewModel.setFilterState(listViewModel.filterState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            activity?.let {
+                val permissionGranted = ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+                if (!permissionGranted) {
+                    ActivityCompat.requestPermissions(
+                        it,
+                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                        REQUEST_NOTIFICATION_PERMISSION
+                    )
+                }
+            }
+        }
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result
+                    Log.d("FCM", "Token: $token")
+                    if (!token.isNullOrBlank()) {
+                        onTokenRegistered(token)
+                    }
+                } else {
+                    Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+                }
+            }
     }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -145,3 +198,5 @@ private fun DisclaimerDialog(
         }
     )
 }
+
+private const val REQUEST_NOTIFICATION_PERMISSION = 1001

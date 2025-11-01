@@ -48,5 +48,6 @@ dependencies {
     implementation(libs.moshi)
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.datastore)
     testImplementation(libs.junit)
 }

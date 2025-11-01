@@ -5,6 +5,7 @@ from flask_cors import CORS
 import pandas as pd
 from config import Config
 from services import csvio
+from services import notifications
 from services.filters import apply_filters
 from services.ml import predict_from_models
 
@@ -12,8 +13,18 @@ def estimate_radius_km(magnitude: float) -> float:
     # Visual-only radius; scales with magnitude
     return max(5.0, 7.5 * (2 ** (float(magnitude) - 3)))
 
+def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    r = 6371.0
+    phi1, phi2 = math.radians(lat1), math.radians(lat2)
+    d_phi = math.radians(lat2 - lat1)
+    d_lambda = math.radians(lon2 - lon1)
+    a = math.sin(d_phi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(d_lambda / 2) ** 2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    return r * c
+
 def create_app():
     csvio.ensure_storage()
+    notifications.ensure_storage()
     app = Flask(__name__)
     app.config.from_object(Config)
     CORS(app)
@@ -225,6 +236,230 @@ def create_app():
         hidden.discard(qid)
         csvio.set_hidden_ids(hidden)
         return jsonify({"ids": list(hidden)})
+
+    def parse_bool(value):
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, str):
+            return value.strip().lower() in {"1", "true", "yes", "y"}
+        if isinstance(value, (int, float)):
+            return value != 0
+        return False
+    def _safe_float(payload, key):
+        value = payload.get(key)
+        if value is None:
+            return None
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+
+    @app.post("/api/alerts/device-token")
+    def register_device_token():
+        payload = request.get_json(force=True, silent=True) or {}
+        token = (payload.get("fcmToken") or payload.get("token") or "").strip()
+        metadata = {
+            "platform": payload.get("platform"),
+            "locale": payload.get("locale"),
+            "appVersion": payload.get("appVersion"),
+        }
+        metadata = {key: value for key, value in metadata.items() if value}
+
+        if not token:
+            return jsonify({"ok": False, "error": "Missing fcmToken"}), 400
+
+        entry = notifications.register_token(token, metadata=metadata or None)
+        return jsonify({"ok": True, "token": entry["token"], "created_at": entry["created_at"], "updated_at": entry["updated_at"], "preferences": entry.get("preferences")})
+
+    @app.post("/api/alerts/preferences")
+    def update_alert_preferences():
+        payload = request.get_json(force=True, silent=True) or {}
+        token = (payload.get("fcmToken") or payload.get("token") or "").strip()
+        if not token:
+            return jsonify({"ok": False, "error": "Missing fcmToken"}), 400
+
+        latitude = _safe_float(payload, "latitude")
+        longitude = _safe_float(payload, "longitude")
+        radius_km = _safe_float(payload, "alertRadiusKm") or _safe_float(payload, "radiusKm")
+        minimum_magnitude = _safe_float(payload, "minimumMagnitude")
+
+        entry = notifications.update_preferences(
+            token=token,
+            latitude=latitude,
+            longitude=longitude,
+            radius_km=radius_km,
+            minimum_magnitude=minimum_magnitude,
+        )
+        return jsonify({
+            "ok": True,
+            "token": entry["token"],
+            "preferences": entry.get("preferences"),
+            "updated_at": entry.get("updated_at"),
+        })
+
+    @app.post("/api/alerts/notify/device")
+    def notify_device():
+        payload = request.get_json(force=True, silent=True) or {}
+        token = (payload.get("token") or payload.get("fcmToken") or "").strip()
+        if not token:
+            return jsonify({"ok": False, "error": "Missing device token"}), 400
+
+        title = payload.get("title") or "QuakeScope Alert"
+        body = payload.get("body") or ""
+        data = payload.get("data") if isinstance(payload.get("data"), dict) else {}
+        dry_run = parse_bool(payload.get("dryRun"))
+
+        try:
+            result = notifications.send_notification([token], title, body, data, dry_run=dry_run)
+        except ValueError as exc:
+            return jsonify({"ok": False, "error": str(exc)}), 400
+        except notifications.NotificationSendError as exc:
+            return jsonify({"ok": False, "error": str(exc)}), 500
+
+        return jsonify({"ok": True, "result": result})
+
+    @app.post("/api/alerts/notify/broadcast")
+    def notify_broadcast():
+        payload = request.get_json(force=True, silent=True) or {}
+        tokens_payload = payload.get("tokens")
+        if isinstance(tokens_payload, str):
+            tokens = [tokens_payload]
+        elif isinstance(tokens_payload, list):
+            tokens = [str(token) for token in tokens_payload if token]
+        else:
+            tokens = notifications.list_tokens()
+
+        tokens = [token for token in tokens if token]
+        if not tokens:
+            return jsonify({"ok": False, "error": "No device tokens available"}), 404
+
+        title = payload.get("title") or "QuakeScope Alert"
+        body = payload.get("body") or ""
+        data = payload.get("data") if isinstance(payload.get("data"), dict) else {}
+        dry_run = parse_bool(payload.get("dryRun"))
+
+        try:
+            result = notifications.send_notification(tokens, title, body, data, dry_run=dry_run)
+        except ValueError as exc:
+            return jsonify({"ok": False, "error": str(exc)}), 400
+        except notifications.NotificationSendError as exc:
+            return jsonify({"ok": False, "error": str(exc)}), 500
+
+        return jsonify({"ok": True, "result": result})
+
+    @app.post("/api/alerts/test-earthquake")
+    def test_earthquake_alert():
+        payload = request.get_json(force=True, silent=True) or {}
+        latitude = _safe_float(payload, "latitude")
+        longitude = _safe_float(payload, "longitude")
+        if latitude is None or longitude is None:
+            return jsonify({"ok": False, "error": "latitude and longitude are required"}), 400
+
+        magnitude = _safe_float(payload, "magnitude") or 5.0
+        depth_km = _safe_float(payload, "depth")
+        earthquake_id = payload.get("earthquakeId") or payload.get("id") or f"sim-{int(time.time())}"
+        source = payload.get("source") or "simulated"
+        dry_run = parse_bool(payload.get("dryRun"))
+
+        title = payload.get("title") or (
+            f"Simulated {source} earthquake" if source != "detected" else "Detected earthquake"
+        )
+        body = payload.get("body") or (
+            f"M{magnitude:.1f} event near ({latitude:.3f}, {longitude:.3f})."
+        )
+
+        entries = notifications.load_entries_snapshot()
+        matches = []
+        eligible_tokens = []
+        for token, entry in entries.items():
+            prefs = entry.get("preferences") or {}
+            pref_lat = prefs.get("latitude")
+            pref_lon = prefs.get("longitude")
+            radius_km = prefs.get("radius_km")
+            min_magnitude = prefs.get("minimum_magnitude", 0.0)
+
+            if pref_lat is None or pref_lon is None or radius_km is None:
+                continue
+            if magnitude < (min_magnitude or 0.0):
+                continue
+
+            distance_km = haversine_km(pref_lat, pref_lon, latitude, longitude)
+            if distance_km > radius_km:
+                continue
+            if notifications.has_received_alert(entry, earthquake_id):
+                continue
+
+            eligible_tokens.append(token)
+            matches.append({
+                "token": token,
+                "distance_km": distance_km,
+                "radius_km": radius_km,
+                "min_magnitude": min_magnitude,
+            })
+
+        if not eligible_tokens:
+            return jsonify({
+                "ok": True,
+                "notified": 0,
+                "earthquake": {
+                    "id": earthquake_id,
+                    "latitude": latitude,
+                    "longitude": longitude,
+                    "magnitude": magnitude,
+                    "depth": depth_km,
+                    "source": source,
+                },
+                "matches": matches,
+                "message": "No subscribers matched the simulated earthquake filters.",
+            })
+
+        data_payload = {
+            "earthquake_id": earthquake_id,
+            "magnitude": f"{magnitude:.2f}",
+            "source": source,
+            "latitude": f"{latitude:.5f}",
+            "longitude": f"{longitude:.5f}",
+        }
+        if depth_km is not None:
+            data_payload["depth"] = f"{depth_km:.1f}"
+        extra_data = payload.get("data")
+        if isinstance(extra_data, dict):
+            for key, value in extra_data.items():
+                if key is None:
+                    continue
+                data_payload[str(key)] = value
+
+        try:
+            result = notifications.send_notification(
+                eligible_tokens,
+                title=title,
+                body=body,
+                data=data_payload,
+                dry_run=dry_run,
+            )
+        except notifications.NotificationSendError as exc:
+            return jsonify({"ok": False, "error": str(exc)}), 500
+
+        if not dry_run:
+            for response in result.get("responses", []):
+                if response.get("success"):
+                    notifications.record_delivery(response.get("token"), earthquake_id)
+
+        return jsonify({
+            "ok": True,
+            "notified": result.get("success", 0),
+            "dry_run": dry_run,
+            "earthquake": {
+                "id": earthquake_id,
+                "latitude": latitude,
+                "longitude": longitude,
+                "magnitude": magnitude,
+                "depth": depth_km,
+                "source": source,
+            },
+            "matches": matches,
+            "result": result,
+        })
 
     return app
 

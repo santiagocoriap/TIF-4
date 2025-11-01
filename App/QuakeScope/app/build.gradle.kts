@@ -6,6 +6,7 @@ plugins {
     // alias(libs.plugins.hilt)    // commented out to avoid plugin resolution error
     id("com.google.dagger.hilt.android") version "2.50"
     alias(libs.plugins.ksp)
+    id("com.google.gms.google-services")
 }
 
 
@@ -106,6 +107,7 @@ dependencies {
     // Moshi
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
+    implementation(libs.androidx.datastore)
 
     // Google Maps
     implementation(libs.maps.compose)
@@ -113,6 +115,11 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
 
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation("com.google.firebase:firebase-messaging")
+    implementation(libs.play.services.location)
+    implementation(libs.coroutines.play.services)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

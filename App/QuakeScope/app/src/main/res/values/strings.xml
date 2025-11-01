@@ -83,4 +83,26 @@
     <string name="sort_estimated_magnitude_asc">Estimated: Lowest magnitude</string>
     <string name="sort_estimated_depth_desc">Estimated: Deepest first</string>
     <string name="sort_estimated_depth_asc">Estimated: Shallowest first</string>
+    <string name="notification_channel_name">Earthquake alerts</string>
+    <string name="notification_channel_description">Notifications about detected and expected earthquakes near you.</string>
+    <string name="notification_default_title">Earthquake alert</string>
+    <string name="notification_default_body">Stay alert. Review quake details inside the app.</string>
+    <string name="settings_alert_preferences_title">Alert preferences</string>
+    <string name="settings_alert_preferences_description">Control which earthquakes trigger push notifications.</string>
+    <string name="settings_alert_radius_label">Alert radius</string>
+    <string name="settings_alert_radius_value">Within %1$.0f km</string>
+    <string name="settings_alert_magnitude_label">Minimum magnitude</string>
+    <string name="settings_alert_magnitude_value">Magnitude %1$.1f+</string>
+    <string name="settings_alert_location_title">Current location</string>
+    <string name="settings_alert_location_status_unknown">Location not set</string>
+    <string name="settings_alert_location_status_value">Lat %1$.3f, Lon %2$.3f</string>
+    <string name="settings_alert_location_action">Use current location</string>
+    <string name="settings_alert_location_fetching">Updating location...</string>
+    <string name="settings_alert_location_permission_denied">Location permission is required to set nearby notifications.</string>
+    <string name="settings_alert_location_updated">Location updated</string>
+    <string name="settings_alert_location_failed">Unable to get current location</string>
+    <string name="settings_alert_save_button">Save alert preferences</string>
+    <string name="settings_alert_saving">Saving...</string>
+    <string name="settings_alert_save_success">Alert preferences updated</string>
+    <string name="settings_alert_save_error">Could not save preferences</string>
 </resources>

@@ -16,3 +16,14 @@ QuakeScopeOSMAndroid - 0.1.zip
 build
 .venv310
 .env
+QuakeScope.zip
+Server/quake-backend-flask-csv-ml/.venv/
+Server/quake-backend-flask-csv-ml/data/device_tokens.json
+Server/quake-backend-flask-csv-ml/app/quakescope-*.json
+**/__pycache__/
+*.pyc
+*.log
+.vscode/
+*.keystore
+*.jks
+App/QuakeScope/app/google-services.json

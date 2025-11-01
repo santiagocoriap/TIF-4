@@ -8,3 +8,5 @@ tensorflow==2.16.1; platform_machine != "arm64" or platform_system != "Darwin"
 joblib==1.4.2
 scikit-learn==1.6.1
 python-dotenv==1.0.1
+requests==2.32.3
+google-auth==2.35.0
