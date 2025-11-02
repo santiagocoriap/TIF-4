@@ -1,0 +1,80 @@
+<resources>
+    <string-array name="wiki_basics_sub_origin_points">
+        <item>Los sismos comienzan en límites de placas o fallas locales donde la tensión acumulada provoca un deslizamiento repentino.</item>
+        <item>El hipocentro es el inicio subterráneo de la ruptura; el epicentro es el punto justo encima en la superficie.</item>
+        <item>Los precursores y las réplicas son eventos menores relacionados con el mismo ajuste de la falla.</item>
+    </string-array>
+    <string-array name="wiki_basics_sub_scale_points">
+        <item>La magnitud mide la energía total liberada por el sismo.</item>
+        <item>La intensidad varía según la distancia, el tipo de suelo y el diseño de las construcciones.</item>
+        <item>Un mismo sismo puede generar intensidades distintas en barrios cercanos; espera daños desiguales.</item>
+    </string-array>
+    <string-array name="wiki_basics_sub_signals_points">
+        <item>Algunas regiones cuentan con aplicaciones de alerta temprana que avisan segundos antes de que llegue la sacudida.</item>
+        <item>Configura tu teléfono para recibir alertas gubernamentales y mensajes de protección civil.</item>
+        <item>Confía en notificaciones oficiales por encima de rumores; las falsas alarmas hacen perder segundos valiosos.</item>
+    </string-array>
+    <string-array name="wiki_before_sub_home_points">
+        <item>Ancla muebles altos, calentadores y tinacos a los muros estructurales.</item>
+        <item>Coloca seguros en gabinetes y asegura objetos pesados lejos de camas o sillones.</item>
+        <item>Aprende a cerrar el gas, la luz y el agua cuando las autoridades lo indiquen.</item>
+        <item>Identifica lugares seguros bajo mesas resistentes o junto a muros interiores.</item>
+    </string-array>
+    <string-array name="wiki_before_sub_plan_points">
+        <item>Elige un contacto fuera de la zona a quien todos puedan enviar mensajes si la red local se satura.</item>
+        <item>Acuerden dos puntos de reunión: uno cercano a casa y otro fuera del vecindario.</item>
+        <item>Enseña a los niños cómo y cuándo llamar a los servicios de emergencia.</item>
+    </string-array>
+    <string-array name="wiki_before_sub_drills_points">
+        <item>Practica la secuencia Agáchate-Cúbrete-Sujétate al menos dos veces al año en cada habitación.</item>
+        <item>Actualiza aplicaciones de alerta y revisa baterías de radios o linternas cada temporada.</item>
+        <item>Toma cursos comunitarios de respuesta para aprender rescate básico y manejo de incendios.</item>
+    </string-array>
+    <string-array name="wiki_during_sub_indoor_points">
+        <item>Agáchate sobre manos y rodillas para evitar caídas.</item>
+        <item>Protege cabeza y cuello bajo un escritorio o mesa firme.</item>
+        <item>Sujétate al refugio hasta que termine la sacudida.</item>
+        <item>Permanecer dentro; las puertas no son más seguras que otras zonas.</item>
+    </string-array>
+    <string-array name="wiki_during_sub_outdoor_points">
+        <item>Aléjate de edificios, árboles, cables y puentes.</item>
+        <item>Si conduces, oríllate con seguridad, activa el freno y permanece dentro del vehículo.</item>
+        <item>Evita detenerte bajo pasos elevados, letreros o taludes inestables.</item>
+    </string-array>
+    <string-array name="wiki_during_sub_special_points">
+        <item>Si usas silla de ruedas, bloquea las ruedas y cubre tu cabeza con brazos o una almohada.</item>
+        <item>Si estás en cama, permanece allí, cubre tu cabeza y espera a que termine el movimiento.</item>
+        <item>En lugares concurridos, mantén la calma, protege la cabeza y desplázate con cuidado cuando sea seguro.</item>
+    </string-array>
+    <string-array name="wiki_after_sub_check_points">
+        <item>Espera réplicas; sal de estructuras dañadas con calma y busca espacios abiertos si es necesario.</item>
+        <item>Revisa si hay fuego, olor a gas o cables chispeando antes de accionar interruptores.</item>
+        <item>Si detectas fuga de gas, abre ventanas, evacúa y repórtalo.</item>
+    </string-array>
+    <string-array name="wiki_after_sub_help_points">
+        <item>Brinda primeros auxilios con lo que tengas hasta que llegue ayuda profesional.</item>
+        <item>Tranquiliza a niñas y niños con palabras sencillas y mantén unida a la familia.</item>
+        <item>Mantén a las mascotas con correa o transportadora; el ruido y los escombros pueden desorientarlas.</item>
+    </string-array>
+    <string-array name="wiki_after_sub_stayinformed_points">
+        <item>Usa radio a pilas o alertas oficiales para conocer órdenes de evacuación y novedades.</item>
+        <item>Envía mensajes de texto en lugar de llamadas para no saturar las redes.</item>
+        <item>Sigue indicaciones oficiales antes de ingresar a edificios dañados.</item>
+    </string-array>
+    <string-array name="wiki_kit_sub_basic_points">
+        <item>Un galón (3.8 L) de agua por persona al día durante al menos tres días.</item>
+        <item>Alimentos no perecederos y un abrelatas manual.</item>
+        <item>Linterna, baterías de repuesto, lámpara frontal y silbato.</item>
+        <item>Botiquín básico, medicamentos y artículos de higiene personal.</item>
+    </string-array>
+    <string-array name="wiki_kit_sub_docs_points">
+        <item>Copias de identificaciones, pólizas y recetas médicas en bolsas impermeables.</item>
+        <item>Multiherramienta, guantes, calzado resistente y cinta adhesiva.</item>
+        <item>Billetes de baja denominación, lista de contactos y mapas locales.</item>
+    </string-array>
+    <string-array name="wiki_kit_sub_maintenance_points">
+        <item>Revisa y rota agua, comida y medicinas cada seis meses.</item>
+        <item>Ajusta el contenido para bebés, adultos mayores y mascotas según sus necesidades.</item>
+        <item>Guarda kits accesibles en casa, trabajo y vehículo.</item>
+    </string-array>
+</resources>

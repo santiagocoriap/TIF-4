@@ -25,7 +25,7 @@ fun Navigation(
     NavHost(navController, startDestination = Screen.Map.route, modifier = modifier) {
         composable(Screen.Map.route) { MapScreen(mapViewModel = mapViewModel, sharedViewModel = sharedViewModel) }
         composable(Screen.List.route) { ListScreen(listViewModel = listViewModel, sharedViewModel = sharedViewModel) }
-        composable(Screen.Wiki.route) { WikiScreen() }
+        composable(Screen.Learn.route) { WikiScreen() }
         composable(Screen.Settings.route) { SettingsScreen() }
     }
 }

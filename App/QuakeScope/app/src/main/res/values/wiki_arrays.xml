@@ -1,0 +1,80 @@
+<resources>
+    <string-array name="wiki_basics_sub_origin_points">
+        <item>Earthquakes start along plate boundaries or local faults where stress builds until rocks suddenly slip.</item>
+        <item>The hypocenter is the underground start of the rupture; the epicenter is the point directly above it on the surface.</item>
+        <item>Foreshocks and aftershocks are smaller events related to the same fault adjustment.</item>
+    </string-array>
+    <string-array name="wiki_basics_sub_scale_points">
+        <item>Magnitude measures the total energy released by the earthquake.</item>
+        <item>Intensity varies by distance, ground type, and building design in each location.</item>
+        <item>Large quakes can produce very different intensities across nearby neighborhoods—expect uneven damage.</item>
+    </string-array>
+    <string-array name="wiki_basics_sub_signals_points">
+        <item>Some regions have early warning apps that send alerts seconds before strong shaking arrives.</item>
+        <item>Set your phone to receive government emergency alerts and local civil-defense messages.</item>
+        <item>Trust official notifications over rumors—false alarms waste precious seconds.</item>
+    </string-array>
+    <string-array name="wiki_before_sub_home_points">
+        <item>Bolt tall furniture, heaters, and water tanks to wall studs.</item>
+        <item>Install latches on cabinets and secure heavy décor away from beds or seating areas.</item>
+        <item>Know how to shut off gas, electricity, and water if authorities advise.</item>
+        <item>Identify sturdy shelter spots under tables or against interior walls.</item>
+    </string-array>
+    <string-array name="wiki_before_sub_plan_points">
+        <item>Choose an out-of-area contact everyone can message if local networks are busy.</item>
+        <item>Agree on two meeting spots: one near home and another outside the neighborhood.</item>
+        <item>Teach children how and when to dial emergency services.</item>
+    </string-array>
+    <string-array name="wiki_before_sub_drills_points">
+        <item>Run Drop-Cover-Hold drills at least twice a year in every room you use.</item>
+        <item>Update alert apps and check batteries in radios or flashlights every season.</item>
+        <item>Take community response training to learn basic rescue and fire suppression.</item>
+    </string-array>
+    <string-array name="wiki_during_sub_indoor_points">
+        <item>Drop to your hands and knees so you are not knocked over.</item>
+        <item>Cover your head and neck under a sturdy table or desk.</item>
+        <item>Hold on to your shelter until the shaking stops.</item>
+        <item>Stay indoors—doorways are not stronger than other parts of the room.</item>
+    </string-array>
+    <string-array name="wiki_during_sub_outdoor_points">
+        <item>Move away from buildings, trees, power lines, and bridges.</item>
+        <item>If driving, pull over safely, set the parking brake, and stay inside the vehicle.</item>
+        <item>Avoid stopping under overpasses, signs, or on steep slopes.</item>
+    </string-array>
+    <string-array name="wiki_during_sub_special_points">
+        <item>If you use a wheelchair, lock the wheels and protect your head with your arms or a cushion.</item>
+        <item>If you are in bed, stay where you are, cover your head, and wait for the shaking to end.</item>
+        <item>In crowded places, stay put, shield your head, and move cautiously once it is safe.</item>
+    </string-array>
+    <string-array name="wiki_after_sub_check_points">
+        <item>Expect aftershocks—leave damaged structures calmly and move to open space if needed.</item>
+        <item>Check for fire, gas smells, or sparking wires before flipping switches.</item>
+        <item>If you suspect a gas leak, open windows, leave the building, and report it.</item>
+    </string-array>
+    <string-array name="wiki_after_sub_help_points">
+        <item>Provide first aid with the supplies in your kit until professional help arrives.</item>
+        <item>Reassure children with simple language and keep families together.</item>
+        <item>Keep pets on leashes or in carriers; debris and noise can disorient them.</item>
+    </string-array>
+    <string-array name="wiki_after_sub_stayinformed_points">
+        <item>Use a battery radio or phone alerts for evacuation orders and updates.</item>
+        <item>Send text messages instead of making voice calls to ease network congestion.</item>
+        <item>Follow official guidance before entering damaged buildings.</item>
+    </string-array>
+    <string-array name="wiki_kit_sub_basic_points">
+        <item>One gallon (3.8 L) of water per person per day for at least three days.</item>
+        <item>Non-perishable food and a manual can opener.</item>
+        <item>Flashlight, spare batteries, headlamp, and whistle.</item>
+        <item>Basic first-aid supplies, medications, and personal hygiene items.</item>
+    </string-array>
+    <string-array name="wiki_kit_sub_docs_points">
+        <item>Copies of IDs, insurance policies, and prescriptions sealed in waterproof bags.</item>
+        <item>Multi-tool, gloves, sturdy shoes, and duct tape.</item>
+        <item>Small bills, an emergency contact list, and local maps.</item>
+    </string-array>
+    <string-array name="wiki_kit_sub_maintenance_points">
+        <item>Review and rotate food, water, and medications every six months.</item>
+        <item>Adjust supplies for infants, seniors, and pets as needs change.</item>
+        <item>Store kits in easy-to-grab spots at home, work, and in your vehicle.</item>
+    </string-array>
+</resources>

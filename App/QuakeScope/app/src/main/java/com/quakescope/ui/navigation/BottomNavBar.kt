@@ -21,14 +21,14 @@ import com.quakescope.R
 sealed class Screen(val route: String, @StringRes val title: Int, val icon: ImageVector) {
     object Map : Screen("map", R.string.map, Icons.Default.Map)
     object List : Screen("list", R.string.list, Icons.Default.List)
-    object Wiki : Screen("wiki", R.string.wiki, Icons.Default.MenuBook)
+    object Learn : Screen("wiki", R.string.learn, Icons.Default.MenuBook)
     object Settings : Screen("settings", R.string.settings, Icons.Default.Settings)
 }
 
 val items = listOf(
     Screen.Map,
     Screen.List,
-    Screen.Wiki,
+    Screen.Learn,
     Screen.Settings
 )
 
